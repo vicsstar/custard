@@ -1,0 +1,69 @@
+@(title: String, scripts: Html = Html.empty, styles: Html = Html.empty)(content: Html)(implicit user: Option[User])
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>@title - Custard</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+    <!--
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
+    -->
+    <style type="text/css">
+    body {
+      margin-top:40px;
+    }
+    .pull-center {
+      margin: 0px auto;
+      display: inline-block;
+    }
+    .footer {
+      margin-top:320px;
+    }
+    </style>
+    @styles
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("javascripts/bootstrap-dropdown.js")"></script>
+    @scripts
+  </head>
+  <body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="@if(user.isDefined) {@routes.Users.dashboard} else {@routes.Application.index}">Custard</a>
+          <div class="nav-collapse">
+            <form class="navbar-search pull-left" method="get" action="@routes.Application.blogSearch">
+              <input type="text" name="query" class="search-query span4" placeholder="Search this blog"/>
+            </form>
+            <ul class="nav pull-right">
+              <li><a href="@routes.Users.newPost">New Blog Post</a></li>
+              @user.map { user =>
+                <li class="divider-vertical"></li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown"><strong>@user.getFullName</strong> <b class="caret"></b></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="@routes.Users.changePassword">Change My Password</a></li>
+                    <li class="divider"></li>
+                    <li><a href="@routes.Application.logout">Logout</a></li>
+                  </ul>
+                </li>
+              }
+            </ul>
+          </div><!-- /.nav-collapse -->
+        </div>
+      </div><!-- /navbar-inner -->
+    </div>
+    <div class="container">
+      @content
+      <div class="footer">
+        <hr/>
+        <small><em>Copyright &copy; 2012. Victor Igbokwe (vicsstar@@yahoo.com)</em></small>
+      </div>
+    </div>
+  </body>
+</html>

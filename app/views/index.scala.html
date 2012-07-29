@@ -1,0 +1,37 @@
+@(posts: List[Post])(implicit user: Option[User])
+
+@main("Home") {
+  <div class="row">
+    <div class="span16 page-header">
+      <h2 class="pull-left">Home</h2>
+      <div class="pull-right">
+        <a href="@routes.Application.login" class="btn btn-warning">Login</a>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span16">
+      @if(posts.isEmpty) {
+        <div class="alert alert-warning">
+          <h3>Sorry, there are no blog posts at this time.</h3>
+        </div>
+      } else {
+        @posts.map { post =>
+          <div>
+            <blockquote>
+              <h3><a href="@routes.Application.showPost(post.id)">@post.title</a></h3>
+              <p style="color:#777;">
+                @if(post.content.size > 128) {
+                  @post.content.subSequence(0, 128)
+                } else {
+                  @post.content
+                }
+              </p>
+              <em style="font-size:11px;">@(new java.text.SimpleDateFormat("MMMM dd, yyyy hh:mm a").format(post.createdOn))</em>
+            </blockquote>
+          </div>
+        }
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,59 @@
+@(form: Form[Post])(implicit user: Option[User], flash: play.mvc.Http.Flash)
+
+@scripts = {
+  <script type="text/javascript">
+  $(function() {
+    $('#title').focus();
+
+    $('.cancel_btn').on('click', function() {
+      // redirect to the dashboard page.
+      location.href = '@routes.Users.dashboard';
+    });
+  })
+  </script>
+}
+
+@main("Edit Post", scripts) {
+  <div class="row">
+    <div class="span16 page-header">
+      <h2>Edit Post</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span8">
+      @if(form.hasGlobalErrors) {
+        <div class="alert alert-error">@form.globalError.message()</div>
+      } else {
+        @form.errors().headOption.map { error =>
+          <div class="alert alert-error">@Messages(error._1)</div>
+        }
+      }
+      @*flash.get("success").map { message =>
+        <div class="alert alert-success">@message</div>
+      }*@
+      <form action="@routes.Users.doEditPost" method="post" class="form-vertical">
+        <div class="control-group">
+          <div class="control-label">
+            <label for="title">Enter the title of the post</label>
+          </div>
+          <div class="controls">
+            <input type="text" name="title" id="title" class="span8" value="@form.field("title").value()"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="control-label">
+            <label for="content">Enter the body of the post</label>
+          </div>
+          <div class="controls">
+            <textarea name="content" id="content" class="span8" rows="10">@form.field("content").value()</textarea>
+          </div>
+        </div>
+        <div class="form-actions">
+          <input type="hidden" name="id" value="@form.field("id").value()"/>
+          <button type="submit" class="btn btn-primary btn-large">Edit Post</button>
+          <button type="button" class="btn btn-large cancel_btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

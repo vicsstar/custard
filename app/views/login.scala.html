@@ -1,0 +1,54 @@
+@(form: Form[controllers.Application.Login])(implicit user: Option[User])
+
+@import scala.collection.JavaConversions._
+
+@scripts = {
+  <script type="text/javascript">
+  $(function() {
+    // focus on the username field whenever this page loads.
+    $('input[name=username]').focus();
+  });
+  </script>
+}
+
+@styles = {
+  <style type="text/css">
+  body {
+    margin-top: 120px;
+  }
+  </style>
+}
+
+@main("Login", scripts, styles) {
+  <div class="row">
+    <div class="span16">
+      <div class="row">
+        <div class="span4">&nbsp;</div>
+        <div class="span8">
+          <div class="row">
+            <div class="span8">
+              <div class="page-header">
+                <h2>Login</h2>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span8">
+              @if(form.hasGlobalErrors) {
+                <div class="alert alert-error">@form.globalError.message()</div>
+              } else {
+                @form.errors().headOption.map { error =>
+                  <div class="alert alert-error">@Messages(error._1)</div>
+                }
+              }
+              <form action="@routes.Application.doLogin" method="post" class="well form-inline">
+                <input type="text" name="username" class="input-medium" placeholder="Username" value="@form.field("username").value()"/>
+                <input type="password" name="password" class="input-medium" placeholder="Password"/>
+                <button type="submit" class="btn btn-primary">Login</button>
+              </form>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+}

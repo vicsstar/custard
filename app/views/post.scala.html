@@ -1,0 +1,30 @@
+@(post: Post)(implicit user: Option[User])
+
+@main(post.title) {
+  <div class="row">
+    <div class="span16 page-header">
+      <h2 class="pull-left">@post.title</h2>
+      @if(!user.isDefined) {
+        <div class="pull-right">
+          <a href="@routes.Application.login" class="btn btn-warning">Login</a>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="row">
+    <div class="span16">
+      @if(post == null) {
+        <div class="alert alert-warning">
+          <h3>Sorry, the post you're looking for doesn't exist or have been deleted.</h3>
+        </div>
+      } else {
+        <div>
+          <blockquote>
+            <em style="font-size:11px;">@(new java.text.SimpleDateFormat("MMMM dd, yyyy hh:mm a").format(post.createdOn))</em>
+            <p style="color:#777;">@post.content</p>
+          </blockquote>
+        </div>
+      }
+    </div>
+  </div>
+}

@@ -1,0 +1,72 @@
+@(posts: List[Post])(implicit user: Option[User])
+
+@import java.text.SimpleDateFormat
+
+@scripts = {
+  <script type="text/javascript">
+  $(function() {
+    // bind the click event to each delete button found on the page.
+    $('a.delete_btn').each(function() {
+      // retrieve the button available in "this" context.
+      var $this = $(this);
+
+      // bind the click event here.
+      $this.on('click', function(e) {
+        // cancel the default action performed when clicks take place.
+        e.preventDefault();
+        // retrieve the title of the post to delete.
+        var title = $this.data('title');
+
+        // ask the user if they really want to delete the post.
+        if (confirm('Delete "' + title + '"?\n\nAre you sure?')) {
+          // retrieve the id of the post to delete.
+          var id = $this.data('id');
+        }
+      });
+    });
+  });
+  </script>
+}
+
+@main("Dashboard", scripts) {
+  <div class="row">
+    <div class="span16 page-header">
+      <h2 class="pull-left">Posts</h2>
+      @if(posts.nonEmpty) {
+        <div class="pull-right">
+          <h3>You have @Post.count(user.get) post@if(posts.size != 1) {s}.</h3>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="row">
+    <div class="span16">
+      @if(posts.nonEmpty) {
+        <ul class="thumbnails">
+          @posts.map { post =>
+            <li class="span4">
+              <div class="thumbnail">
+                <div class="caption">
+                  <h4><a href="#" title="View this post." target="_blank">@post.title</a></h4>
+                  <p>@post.content</p>
+                  <p><blockquote>
+                    <small><em>
+                      Created on @(new SimpleDateFormat("MMM dd, yyyy").format(post.createdOn)) at
+                      @(new SimpleDateFormat("hh:mm a").format(post.createdOn))
+                    </em></small>
+                  </blockquote></p>
+                  <p><a href="@routes.Users.editPost(post.id)" class="btn btn-primary btn-small"><span class="icon-white icon-edit"></span> Edit</a>
+                  <a href="#" class="btn btn-danger btn-small delete_btn" data-id="@post.id" data-title="@post.title"><span class="icon-white icon-remove"></span> Delete</a></p>
+                </div>
+              </div>
+            </li>
+          }
+        </ul>
+      } else {
+        <div class="alert alert-warning">
+          <h3>You have no posts.</h3>
+        </div>
+      }
+    </div>
+  </div>
+}

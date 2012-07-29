@@ -1,0 +1,63 @@
+@()(implicit user: Option[User])
+
+@scripts = {
+  <script type="text/javascript">
+  $(function() {
+    $('#password').focus();
+
+    $('.cancel_btn').on('click', function() {
+      // redirect to the dashboard page.
+      location.href = '@routes.Users.dashboard';
+    });
+  })
+  </script>
+}
+
+@main("Change Password", scripts) {
+  <div class="row">
+    <div class="span16 page-header">
+      <h2>Change Your Password</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span8">
+      @*if(form.hasGlobalErrors) {
+        <div class="alert alert-error">@form.globalError.message()</div>
+      } else {
+        @form.errors().headOption.map { error =>
+          <div class="alert alert-error">@Messages(error._1)</div>
+        }
+      }*@
+      <form action="@routes.Users.doCreatePost" method="post" class="form-vertical">
+        <div class="control-group">
+          <div class="control-label">
+            <label for="title">Enter your current password.</label>
+          </div>
+          <div class="controls">
+            <input type="password" name="password" id="password" class="span8"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="control-label">
+            <label for="new_password">Choose a new password.</label>
+          </div>
+          <div class="controls">
+            <input type="password" name="new_password" id="new_password" class="span8"/>
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="control-label">
+            <label for="password_again">Re-enter the password you chose.</label>
+          </div>
+          <div class="controls">
+            <input type="password" name="password_again" id="password_again" class="span8"/>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary btn-large">Change Password</button>
+          <button type="button" class="btn btn-large cancel_btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
