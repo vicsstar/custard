@@ -50,7 +50,13 @@
               <div class="thumbnail">
                 <div class="caption">
                   <h4><a href="@routes.Application.showPost(post.id)" title="View this post." target="_blank">@post.title</a></h4>
-                  <p>@post.content</p>
+                  <p>
+                    @if(post.content.size > 128) {
+                      @post.content.subSequence(0, 128)
+                    } else {
+                      @post.content
+                    }
+                  </p>
                   <p><blockquote>
                     <small><em>
                       Created on @(new SimpleDateFormat("MMM dd, yyyy").format(post.createdOn)) at
