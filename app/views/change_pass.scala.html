@@ -1,9 +1,9 @@
-@()(implicit user: Option[User])
+@(form: Form[Users.PasswordBox])(implicit user: Option[User])
 
 @scripts = {
   <script type="text/javascript">
   $(function() {
-    $('#password').focus();
+    $('#old_password').focus();
 
     $('.cancel_btn').on('click', function() {
       // redirect to the dashboard page.
@@ -21,20 +21,23 @@
   </div>
   <div class="row">
     <div class="span8">
-      @*if(form.hasGlobalErrors) {
+      @if(form.hasGlobalErrors) {
         <div class="alert alert-error">@form.globalError.message()</div>
       } else {
         @form.errors().headOption.map { error =>
           <div class="alert alert-error">@Messages(error._1)</div>
         }
-      }*@
-      <form action="@routes.Users.doCreatePost" method="post" class="form-vertical">
+      }
+      @if(flash.get("success") != null) {
+        <div class="alert alert-success">@flash.get("success")</div>
+      }
+      <form action="@routes.Users.doChangePassword" method="post" class="form-vertical">
         <div class="control-group">
           <div class="control-label">
-            <label for="title">Enter your current password.</label>
+            <label for="old_password">Enter your current password.</label>
           </div>
           <div class="controls">
-            <input type="password" name="password" id="password" class="span8"/>
+            <input type="password" name="old_password" id="old_password" class="span8"/>
           </div>
         </div>
         <div class="control-group">

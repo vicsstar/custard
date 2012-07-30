@@ -6,22 +6,18 @@
   <script type="text/javascript">
   $(function() {
     // bind the click event to each delete button found on the page.
-    $('a.delete_btn').each(function() {
+    $('form.delete_form').each(function() {
       // retrieve the button available in "this" context.
       var $this = $(this);
 
       // bind the click event here.
-      $this.on('click', function(e) {
-        // cancel the default action performed when clicks take place.
-        e.preventDefault();
+      $this.on('submit', function() {
         // retrieve the title of the post to delete.
         var title = $this.data('title');
 
         // ask the user if they really want to delete the post.
-        if (confirm('Delete "' + title + '"?\n\nAre you sure?')) {
-          // retrieve the id of the post to delete.
-          var id = $this.data('id');
-        }
+        // let their decision determine if the delete request will be completed.
+        return (confirm('Delete "' + title + '"?\n\nAre you sure?'));
       });
     });
   });
@@ -31,7 +27,13 @@
 @main("Dashboard", scripts) {
   <div class="row">
     <div class="span16 page-header">
-      <h2 class="pull-left">Posts</h2>
+      <h2>Posts</h2>
+      @if(flash.get("success") != null) {
+        <div class="alert alert-success">@flash.get("success")</div>
+      }
+      @if(flash.get("error") != null) {
+        <div class="alert alert-error">@flash.get("error")</div>
+      }
       @if(posts.nonEmpty) {
         <div class="pull-right">
           <h3>You have @Post.count(user.get) post@if(posts.size != 1) {s}.</h3>
@@ -47,7 +49,7 @@
             <li class="span4">
               <div class="thumbnail">
                 <div class="caption">
-                  <h4><a href="#" title="View this post." target="_blank">@post.title</a></h4>
+                  <h4><a href="@routes.Application.showPost(post.id)" title="View this post." target="_blank">@post.title</a></h4>
                   <p>@post.content</p>
                   <p><blockquote>
                     <small><em>
@@ -55,8 +57,12 @@
                       @(new SimpleDateFormat("hh:mm a").format(post.createdOn))
                     </em></small>
                   </blockquote></p>
-                  <p><a href="@routes.Users.editPost(post.id)" class="btn btn-primary btn-small"><span class="icon-white icon-edit"></span> Edit</a>
-                  <a href="#" class="btn btn-danger btn-small delete_btn" data-id="@post.id" data-title="@post.title"><span class="icon-white icon-remove"></span> Delete</a></p>
+                  <p>
+                  <form action="@routes.Users.deletePost(post.id)" method="post" class="delete_form" data-title="@post.title">
+                    <a href="@routes.Users.editPost(post.id)" class="btn btn-primary btn-small"><span class="icon-white icon-edit"></span> Edit</a>
+                    <button type="submit" class="btn btn-danger btn-small delete_btn"><span class="icon-white icon-remove"></span> Delete</button>
+                  </form>
+                  </p>
                 </div>
               </div>
             </li>

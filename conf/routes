@@ -8,13 +8,17 @@ GET     /login                      controllers.Application.login
 POST    /login                      controllers.Application.doLogin
 GET     /logout                     controllers.Application.logout
 
+
 GET     /change_password            controllers.Users.changePassword
+POST    /change_password            controllers.Users.doChangePassword
+
 GET     /dashboard                  controllers.Users.dashboard
 GET     /posts/new                  controllers.Users.newPost
 POST    /posts/new                  controllers.Users.doCreatePost
 
 GET     /posts/edit/:id             controllers.Users.editPost(id: Long)
 POST    /posts/edit                 controllers.Users.doEditPost
+POST    /posts/delete               controllers.Users.deletePost(id: Long)
 
 GET     /search                     controllers.Application.blogSearch
 GET     /posts/:id                  controllers.Application.showPost(id: Long)
