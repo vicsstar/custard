@@ -4,7 +4,8 @@ Custard is a simple blog written in the PlayFramework demonstrating features of 
 
 Instructions for running the application are as follows:
 
-1. Download the PlayFramework at http://playframework.org or simply download the version used in developing this application at http://download.playframework.org/releases/play-2.0.2.zip
+1. Download the PlayFramework at http://playframework.com or simply download the version used in developing this application at 
+http://download.playframework.com/releases/play-2.0.2.zip
 2. Unzip in your OS of choice.
 3. Change directory to the extracted folder location.
 4. Set your path to the PlayFramework executable:
